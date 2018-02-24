@@ -1,0 +1,53 @@
+#[]
+
+- alias: 'Refresh MQTT Switches'
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    service: mqtt.publish
+    data:
+      topic: cmnd/sonoffs/POWER
+
+- alias: "Front Door Light On at Dusk"
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    service: homeassistant.turn_on
+    entity_id: light.front_door
+
+- alias: "Front Door Light Off at Sunrise"
+  trigger:
+    platform: sun
+    event: sunrise
+  action:
+    service: homeassistant.turn_off
+    entity_id: light.front_door
+#
+#- alias: "Home at sunset"
+#  trigger:
+#    platform: sun
+#    event: sunset
+#    offset: "-00:03:00"
+#  condition:
+#    condition: state
+#    entity_id: group.all_devices
+#    state: home
+#  action:
+#    - service: homeassistant.turn_on
+#      entity_id: group.dininingroom
+#    - service: homeassistant.turn_on
+#      entity_id: group.livingroom_notv
+#    - service: homeassistant.turn_on
+#      entity_id: group.kitchen
+#      data:
+#        brightness_pct: 50
+#        transition: 10
+#    - service: homeassistant.turn_on
+#      entity_id: group.hallway
+#      data:
+#        brightness_pct: 50
+#        transition: 10
+#
+

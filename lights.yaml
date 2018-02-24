@@ -1,0 +1,45 @@
+- platform: mqtt
+  name: "Dining Room Star"
+  state_topic: "stat/dine_right_star/POWER"
+  command_topic: "cmnd/dine_right_star/POWER"
+  availability_topic: "tele/dine_right_star/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  retain: true
+- platform: mqtt
+  name: "Dining Room Shade"
+  state_topic: "stat/sonoff2/POWER"
+  command_topic: "cmnd/sonoff2/POWER"
+  availability_topic: "tele/sonoff2/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  retain: true
+- platform: mqtt
+  name: "Living Room Star"
+  state_topic: "stat/sonoff3/POWER"
+  command_topic: "cmnd/sonoff3/POWER"
+  availability_topic: "tele/sonoff3/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  retain: true
+- platform: mqtt
+  name: "Living Room Salt Sphere"
+  state_topic: "stat/sonoff4/POWER"
+  command_topic: "cmnd/sonoff4/POWER"
+  availability_topic: "tele/sonoff4/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  retain: true
+- platform: mqtt
+  name: "Living Room Large Salt"
+  state_topic: "stat/sonoff5/POWER"
+  command_topic: "cmnd/sonoff5/POWER"
+  availability_topic: "tele/sonoff5/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  retain: true

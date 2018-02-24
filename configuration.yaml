@@ -1,0 +1,197 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret home_elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret home_timezone
+  # Customization file
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+  themes: !include_dir_merge_named themes/
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: !secret base_url
+  ssl_certificate: !secret ssl_certificate
+  server_port: !secret server_port
+  ssl_key: !secret ssl_key
+  ip_ban_enabled: True
+  login_attempts_threshold: !secret login_attempts_threshold
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - sonos
+    - apple_tv
+    - directv
+    - harmony
+    - netgear_router
+    - panasonic_viera
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+
+camera:
+  - platform: ring
+  
+sensor:
+  - platform: nest
+    monitored_conditions:
+      - 'weather_temperature'
+  - platform: ring
+  - platform: fastdotcom 
+  - platform: wunderground
+    api_key: !secret wu_api_key
+    monitored_conditions:
+      - alerts
+      - dewpoint_f
+      - heat_index_f
+      - elevation
+      - location
+      - observation_time
+      - precip_today_in
+      - pressure_mb
+      - pressure_trend
+      - relative_humidity
+      - solarradiation
+      - temp_f
+      - temp_high_record_f
+      - temp_low_record_f
+      - temp_high_avg_f
+      - temp_low_avg_f
+      - temp_high_1d_f
+      - temp_low_1d_f
+      - UV
+      - weather
+      - weather_1d
+      - wind_dir
+      - wind_gust_mph
+      - wind_mph
+      - wind_string
+
+  - platform: speedtest
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+  - platform: moon
+
+ring:
+  username: !secret ring_username
+  password: !secret ring_password
+
+media_player:
+   - platform: plex
+
+ffmpeg:
+
+zone:
+   - name: Home
+     latitude: !secret zone_home_latitude
+     longitude: !secret zone_home_longitude
+     radius: !secret zone_home_radius
+     icon: mdi:owl
+
+device_tracker:
+  - platform: asuswrt
+    interval_seconds: 12
+    consider_home: 300
+    host: !secret router_host
+    username: !secret router_username
+    ssh_key: !secret router_ssh_key
+    track_new_devices: no
+    mode: ap
+    #  - platform: nmap_tracker
+    #hosts: 
+    #  - !secret nmap_host1
+    #  - !secret nmap_host2
+    #exclude: 
+    #  - !secret self_ip
+    #track_new_devices: no
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery: true
+  port: !secret mqtt_port
+  client_id: !secret mqtt_client_id
+  keepalive: 60
+  birth_message:
+    topic: "tele/homeassistant/LWT"
+    payload: "Online"
+    qos: 1
+    retain: true
+  will_message:
+    topic: "tele/homeassistant/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: true
+
+# Example configuration.yaml entry
+google_assistant:
+  project_id: !secret ga_project_id
+  client_id: !secret ga_client_id
+  access_token: !secret ga_access_token
+  agent_user_id: !secret ga_agent_user_id
+  api_key: !secret ga_api_key
+  exposed_domains:
+    - light
+  entity_config:
+    light.front_door:
+      expose: false
+
+device_sun_light_trigger:
+  light_group: group.come_home
+  device_group: group.tracked
+
+light: !include lights.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
